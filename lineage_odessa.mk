@@ -12,7 +12,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
 
 # Inherit from those products. Most specific first.
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
@@ -47,8 +46,9 @@ PRODUCT_AAPT_PREF_CONFIG := xxxhdpi
 
 # Build info
 BUILD_FINGERPRINT := "motorola/odessa_retail/odessa:11/RPAS31.Q2-59-17-4-5-5/af8e3:user/release-keys"
-PRODUCT_BUILD_PROP_OVERRIDES += \
-    PRODUCT_NAME=odessa_retail \
-    PRIVATE_BUILD_DESC="odessa_retail-user 11 RPAS31.Q2-59-17-4-5-5 af8e3 release-keys"  
 
+# Custom props (válidas e seguras)
+PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
+
+# GMS
 PRODUCT_GMS_CLIENTID_BASE := android-motorola

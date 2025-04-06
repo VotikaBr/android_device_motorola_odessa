@@ -22,7 +22,7 @@ PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
 
 # LOS
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
-    ro.lineage.maintainer=dias.thiago__
+    ro.lineage.maintainer=VotikaBr
 
 # SIM
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \

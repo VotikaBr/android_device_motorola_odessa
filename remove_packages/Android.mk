@@ -14,7 +14,6 @@ LOCAL_OVERRIDES_PACKAGES := \
     ScribePrebuilt \
     Videos \
     MeetPrebuilt_20240128 \
-    PlayAutoInstallConfig \
     SwitchAccessPrebuilt \
     TurboAdapter \
     talkback \
@@ -23,7 +22,6 @@ LOCAL_OVERRIDES_PACKAGES := \
     PrebuiltGmail \
     GoogleFeedback \
     TagGoogle \
-    AndroidAutoStubPrebuilt \
     TurboPrebuilt
 LOCAL_UNINSTALLABLE_MODULE := true
 LOCAL_CERTIFICATE := PRESIGNED

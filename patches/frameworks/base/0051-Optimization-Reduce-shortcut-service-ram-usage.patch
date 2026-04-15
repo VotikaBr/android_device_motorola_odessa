@@ -1,0 +1,34 @@
+From f82f527b30a7aeeb312811e23ec4e4d9864c7b26 Mon Sep 17 00:00:00 2001
+From: rmp22 <195054967+rmp22@users.noreply.github.com>
+Date: Thu, 13 Feb 2025 13:28:16 +0800
+Subject: [PATCH 51/74] [Optimization] Reduce shortcut service ram usage
+
+Change-Id: Ifa087cd09020159e4b559f35dd22091f92400f6a
+Signed-off-by: rmp22 <195054967+rmp22@users.noreply.github.com>
+---
+ .../core/java/com/android/server/pm/ShortcutService.java  | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
+
+diff --git a/services/core/java/com/android/server/pm/ShortcutService.java b/services/core/java/com/android/server/pm/ShortcutService.java
+index 66e9e772e063..69d0e4c01327 100644
+--- a/services/core/java/com/android/server/pm/ShortcutService.java
++++ b/services/core/java/com/android/server/pm/ShortcutService.java
+@@ -817,13 +817,9 @@ public class ShortcutService extends IShortcutService.Stub {
+         mMaxShortcutsPerApp = Math.max(0, (int) parser.getLong(
+                 ConfigConstants.KEY_MAX_SHORTCUTS_PER_APP, DEFAULT_MAX_SHORTCUTS_PER_APP));
+ 
+-        final int iconDimensionDp = Math.max(1, injectIsLowRamDevice()
+-                ? (int) parser.getLong(
++        final int iconDimensionDp = Math.max(1, (int) parser.getLong(
+                 ConfigConstants.KEY_MAX_ICON_DIMENSION_DP_LOWRAM,
+-                DEFAULT_MAX_ICON_DIMENSION_LOWRAM_DP)
+-                : (int) parser.getLong(
+-                ConfigConstants.KEY_MAX_ICON_DIMENSION_DP,
+-                DEFAULT_MAX_ICON_DIMENSION_DP));
++                DEFAULT_MAX_ICON_DIMENSION_LOWRAM_DP));
+ 
+         mMaxIconDimension = injectDipToPixel(iconDimensionDp);
+ 
+-- 
+2.43.0
+

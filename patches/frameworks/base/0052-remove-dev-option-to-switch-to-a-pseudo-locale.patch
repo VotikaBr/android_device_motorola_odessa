@@ -1,0 +1,43 @@
+From abb66b52f1a0adf0a35bb49dd93d1d681243d19e Mon Sep 17 00:00:00 2001
+From: Dmitry Muhomor <muhomor.dmitry@gmail.com>
+Date: Wed, 30 Jul 2025 21:13:16 +0300
+Subject: [PATCH 52/74] remove dev option to switch to a pseudo-locale
+
+Pseudo-locales currently render the device unbootable.
+---
+ core/java/com/android/internal/app/LocaleStore.java | 12 ++----------
+ 1 file changed, 2 insertions(+), 10 deletions(-)
+
+diff --git a/core/java/com/android/internal/app/LocaleStore.java b/core/java/com/android/internal/app/LocaleStore.java
+index b3b06037ec24..55dfe0defa42 100644
+--- a/core/java/com/android/internal/app/LocaleStore.java
++++ b/core/java/com/android/internal/app/LocaleStore.java
+@@ -464,8 +464,6 @@ public class LocaleStore {
+ 
+         Set<String> simCountries = getSimCountries(context);
+ 
+-        final boolean isInDeveloperMode = Settings.Global.getInt(context.getContentResolver(),
+-                Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0) != 0;
+         Set<Locale> numberSystemLocaleList = new HashSet<>();
+         for (String localeId : LocalePicker.getSupportedLocales(context)) {
+             if (Locale.forLanguageTag(localeId).getUnicodeLocaleType("nu") != null) {
+@@ -479,14 +477,8 @@ public class LocaleStore {
+             LocaleInfo li = new LocaleInfo(localeId);
+ 
+             if (LocaleList.isPseudoLocale(li.getLocale())) {
+-                if (isInDeveloperMode) {
+-                    li.setTranslated(true);
+-                    li.mIsPseudo = true;
+-                    li.mSuggestionFlags |= LocaleInfo.SUGGESTION_TYPE_SIM;
+-                } else {
+-                    // Do not display pseudolocales unless in development mode.
+-                    continue;
+-                }
++                // Do not display pseudolocales
++                continue;
+             }
+ 
+             if (simCountries.contains(li.getLocale().getCountry())) {
+-- 
+2.43.0
+

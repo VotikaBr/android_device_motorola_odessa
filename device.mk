@@ -39,7 +39,7 @@ DEVICE_PACKAGE_OVERLAYS += \
     $(LOCAL_PATH)/overlay-custom
 
 PRODUCT_PACKAGES += \
-    CarrierConfig \
+    CarrierConfigOdessa \
     FrameworksResOdessa \
     SettingsResOdessa \
     SystemUIResOdessa \
@@ -71,7 +71,6 @@ PRODUCT_PACKAGES += \
     android.hardware.nfc@1.2-service \
     com.android.nfc_extras \
     SecureElement \
-    NfcNci \
     Tag
 
 PRODUCT_COPY_FILES += \

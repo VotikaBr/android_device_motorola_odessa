@@ -1,0 +1,28 @@
+From b96b3ebf470debe8ab3b9249a3280e096876d174 Mon Sep 17 00:00:00 2001
+From: minaripenguin <minaripenguin@users.noreply.github.com>
+Date: Fri, 1 Nov 2024 13:18:08 +0800
+Subject: [PATCH 47/74] AppStandbyController: Limit auto restricted bucket
+ delay
+
+---
+ .../java/com/android/server/usage/AppStandbyController.java   | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/apex/jobscheduler/service/java/com/android/server/usage/AppStandbyController.java b/apex/jobscheduler/service/java/com/android/server/usage/AppStandbyController.java
+index b87b5ceebd98..e092eae4514b 100644
+--- a/apex/jobscheduler/service/java/com/android/server/usage/AppStandbyController.java
++++ b/apex/jobscheduler/service/java/com/android/server/usage/AppStandbyController.java
+@@ -2701,9 +2701,7 @@ public class AppStandbyController
+ 
+                 final ActivityManager activityManager =
+                         (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
+-                if (activityManager.isLowRamDevice() || ActivityManager.isSmallBatteryDevice()) {
+-                    mAutoRestrictedBucketDelayMs = 12 * ONE_HOUR;
+-                }
++                mAutoRestrictedBucketDelayMs = 12 * ONE_HOUR;
+             } else if (phase == PHASE_BOOT_COMPLETED) {
+                 // mWellbeingApp needs to be initialized lazily after boot to allow for roles to be
+                 // parsed and the wellbeing role-holder to be assigned
+-- 
+2.43.0
+

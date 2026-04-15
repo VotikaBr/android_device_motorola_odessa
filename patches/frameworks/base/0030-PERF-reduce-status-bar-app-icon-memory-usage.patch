@@ -1,0 +1,26 @@
+From 8680070d767f3865e2356495ee702da09c5e24e2 Mon Sep 17 00:00:00 2001
+From: rmp22 <195054967+rmp22@users.noreply.github.com>
+Date: Fri, 18 Jul 2025 21:38:01 +0800
+Subject: [PATCH 30/74] [PERF] reduce status bar app icon memory usage
+
+Change-Id: Icd07e254f7a305d292ad94c0ffb7980321f283e1
+---
+ .../systemui/statusbar/notification/row/icon/AppIconProvider.kt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/packages/SystemUI/src/com/android/systemui/statusbar/notification/row/icon/AppIconProvider.kt b/packages/SystemUI/src/com/android/systemui/statusbar/notification/row/icon/AppIconProvider.kt
+index 33d943348cb3..80b7fbdc6571 100644
+--- a/packages/SystemUI/src/com/android/systemui/statusbar/notification/row/icon/AppIconProvider.kt
++++ b/packages/SystemUI/src/com/android/systemui/statusbar/notification/row/icon/AppIconProvider.kt
+@@ -100,7 +100,7 @@ constructor(@ShadeDisplayAware private val sysuiContext: Context, dumpManager: D
+ 
+     private val iconFactory: BaseIconFactory
+         get() {
+-            val isLowRam = ActivityManager.isLowRamDeviceStatic()
++            val isLowRam = true
+             val res = sysuiContext.resources
+             val iconSize: Int =
+                 res.getDimensionPixelSize(
+-- 
+2.43.0
+

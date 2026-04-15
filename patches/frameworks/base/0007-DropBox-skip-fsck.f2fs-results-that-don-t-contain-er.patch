@@ -1,0 +1,31 @@
+From 0e08239ca8f6b12d6bc39e044854863314ebdba9 Mon Sep 17 00:00:00 2001
+From: Dmitry Muhomor <muhomor.dmitry@gmail.com>
+Date: Tue, 16 Jan 2024 18:18:29 +0200
+Subject: [PATCH 07/74] DropBox: skip fsck.f2fs results that don't contain
+ errors
+
+---
+ services/core/java/com/android/server/BootReceiver.java | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/services/core/java/com/android/server/BootReceiver.java b/services/core/java/com/android/server/BootReceiver.java
+index cf0d7e72ba8b..83d24b788833 100644
+--- a/services/core/java/com/android/server/BootReceiver.java
++++ b/services/core/java/com/android/server/BootReceiver.java
+@@ -703,8 +703,12 @@ public class BootReceiver extends BroadcastReceiver {
+         int lineNumber = 0;
+         int lastFsStatLineNumber = 0;
+         for (String line : lines) { // should check all lines
+-            if (line.contains(E2FSCK_FS_MODIFIED) || line.contains(F2FS_FSCK_FS_MODIFIED)) {
++            if (line.contains(E2FSCK_FS_MODIFIED)) {
+                 uploadNeeded = true;
++            } else if (line.contains(F2FS_FSCK_FS_MODIFIED)) {
++                if (log.contains("[ERROR]") || log.contains("[Failed]")) {
++                    uploadNeeded = true;
++                }
+             } else if (line.contains("fs_stat")) {
+                 Matcher matcher = pattern.matcher(line);
+                 if (matcher.find()) {
+-- 
+2.43.0
+

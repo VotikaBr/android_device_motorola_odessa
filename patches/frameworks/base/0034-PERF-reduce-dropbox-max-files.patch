@@ -1,0 +1,27 @@
+From 536a8f1c8c9008f55650999730c2db8d016e874b Mon Sep 17 00:00:00 2001
+From: rmp22 <195054967+rmp22@users.noreply.github.com>
+Date: Fri, 18 Jul 2025 21:39:32 +0800
+Subject: [PATCH 34/74] [PERF] reduce dropbox max files
+
+Change-Id: Ica99c3bb4a90673046f12e1cb26dde3356e0a1ee
+---
+ .../core/java/com/android/server/DropBoxManagerService.java    | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/services/core/java/com/android/server/DropBoxManagerService.java b/services/core/java/com/android/server/DropBoxManagerService.java
+index 75b0fc24bea6..21a1309995bf 100644
+--- a/services/core/java/com/android/server/DropBoxManagerService.java
++++ b/services/core/java/com/android/server/DropBoxManagerService.java
+@@ -1194,8 +1194,7 @@ public final class DropBoxManagerService extends SystemService {
+                 Settings.Global.DROPBOX_AGE_SECONDS, DEFAULT_AGE_SECONDS);
+         mMaxFiles = Settings.Global.getInt(mContentResolver,
+                 Settings.Global.DROPBOX_MAX_FILES,
+-                (ActivityManager.isLowRamDeviceStatic()
+-                        ?  DEFAULT_MAX_FILES_LOWRAM : DEFAULT_MAX_FILES));
++                DEFAULT_MAX_FILES_LOWRAM);
+         long curTimeMillis = System.currentTimeMillis();
+         long cutoffMillis = curTimeMillis - ageSeconds * 1000;
+         while (!mAllFiles.contents.isEmpty()) {
+-- 
+2.43.0
+

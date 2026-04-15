@@ -1,0 +1,30 @@
+From a147a23e7c9abb3cf67f0b229cf1c4d842ec376e Mon Sep 17 00:00:00 2001
+From: rmp22 <195054967+rmp22@users.noreply.github.com>
+Date: Fri, 18 Jul 2025 21:34:51 +0800
+Subject: [PATCH 31/74] [PERF] reduce logbuffer size
+
+Change-Id: I34d5183ae92fa01966ad92968ae2300662055d1b
+---
+ .../src/com/android/systemui/log/LogBufferHelper.kt         | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
+
+diff --git a/packages/SystemUI/src/com/android/systemui/log/LogBufferHelper.kt b/packages/SystemUI/src/com/android/systemui/log/LogBufferHelper.kt
+index 619eac1dbdc3..972bf15fde02 100644
+--- a/packages/SystemUI/src/com/android/systemui/log/LogBufferHelper.kt
++++ b/packages/SystemUI/src/com/android/systemui/log/LogBufferHelper.kt
+@@ -22,11 +22,7 @@ class LogBufferHelper {
+     companion object {
+         /** If necessary, returns a limited maximum size for low ram (Go) devices */
+         fun adjustMaxSize(requestedMaxSize: Int): Int {
+-            return if (ActivityManager.isLowRamDeviceStatic()) {
+-                minOf(requestedMaxSize, 20) /* low ram max log size*/
+-            } else {
+-                requestedMaxSize
+-            }
++            return minOf(requestedMaxSize, 20)
+         }
+     }
+ }
+-- 
+2.43.0
+

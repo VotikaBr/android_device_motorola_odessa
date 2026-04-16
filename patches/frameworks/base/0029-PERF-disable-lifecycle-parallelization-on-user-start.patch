@@ -1,0 +1,26 @@
+From b09f934b83c485ffa6a494ea1054c8b6235c7e08 Mon Sep 17 00:00:00 2001
+From: rmp22 <195054967+rmp22@users.noreply.github.com>
+Date: Fri, 18 Jul 2025 21:44:45 +0800
+Subject: [PATCH 29/74] [PERF] disable lifecycle parallelization on user start
+
+Change-Id: I2a2fb414e8388e49f5ad02a565bc5d07de2b4858
+---
+ services/core/java/com/android/server/SystemServiceManager.java | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/services/core/java/com/android/server/SystemServiceManager.java b/services/core/java/com/android/server/SystemServiceManager.java
+index 32c7dde7a555..5edf6e943a21 100644
+--- a/services/core/java/com/android/server/SystemServiceManager.java
++++ b/services/core/java/com/android/server/SystemServiceManager.java
+@@ -620,7 +620,7 @@ public final class SystemServiceManager implements Dumpable {
+             case USER_STARTING:
+                 // Don't allow lifecycle parallelization for user start on low ram devices and
+                 // the system user.
+-                return !ActivityManager.isLowRamDeviceStatic() && userId != UserHandle.USER_SYSTEM;
++                return false;
+             case USER_COMPLETED_EVENT:
+                 return true;
+             default:
+-- 
+2.43.0
+

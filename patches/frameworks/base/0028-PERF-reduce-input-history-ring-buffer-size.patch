@@ -1,0 +1,30 @@
+From e322f2f829f5100bc9543715c0950cbb1f643279 Mon Sep 17 00:00:00 2001
+From: rmp22 <195054967+rmp22@users.noreply.github.com>
+Date: Fri, 18 Jul 2025 21:45:43 +0800
+Subject: [PATCH 28/74] [PERF] reduce input history ring buffer size
+
+Change-Id: I050fd8fd250fae7473669dbab95271c884c42382
+---
+ .../com/android/server/inputmethod/StartInputHistory.java   | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
+
+diff --git a/services/core/java/com/android/server/inputmethod/StartInputHistory.java b/services/core/java/com/android/server/inputmethod/StartInputHistory.java
+index 3a39434f2d02..7775ab57c3de 100644
+--- a/services/core/java/com/android/server/inputmethod/StartInputHistory.java
++++ b/services/core/java/com/android/server/inputmethod/StartInputHistory.java
+@@ -52,11 +52,7 @@ final class StartInputHistory {
+     private static final int ENTRY_SIZE_FOR_LOW_RAM_DEVICE = 5;
+ 
+     private static int getEntrySize() {
+-        if (ActivityManager.isLowRamDeviceStatic()) {
+-            return ENTRY_SIZE_FOR_LOW_RAM_DEVICE;
+-        } else {
+-            return ENTRY_SIZE_FOR_HIGH_RAM_DEVICE;
+-        }
++        return ENTRY_SIZE_FOR_LOW_RAM_DEVICE;
+     }
+ 
+     /**
+-- 
+2.43.0
+

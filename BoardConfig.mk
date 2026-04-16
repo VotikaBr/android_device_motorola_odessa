@@ -22,7 +22,7 @@ DEVICE_PATH := device/motorola/odessa
 TARGET_SCREEN_DENSITY := 420
 
 # Kernel
-TARGET_KERNEL_CONFIG := vendor/odessa_defconfig
+TARGET_KERNEL_CONFIG := vendor/odessa_defconfig vendor/debugfs.config
 
 # Kernel modules - Audio
 TARGET_MODULE_ALIASES += \
@@ -30,6 +30,9 @@ TARGET_MODULE_ALIASES += \
 
 # HIDL
 DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/manifest.xml
+
+# prop
+TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
 
 # SELinux
 BOARD_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/vendor

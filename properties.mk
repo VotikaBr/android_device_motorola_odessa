@@ -20,10 +20,6 @@ PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
     ro.vendor.sensors.mot_ltv=true \
     ro.vendor.sensors.glance_approach=false
 
-# LOS
-PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
-    ro.lineage.maintainer=dias.thiago__
-
 # SIM
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
     ro.multisim.simslotcount=2 \

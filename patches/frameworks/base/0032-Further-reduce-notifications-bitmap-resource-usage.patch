@@ -1,0 +1,90 @@
+From 0e21531229890586a02dde395716fe5caf26c1c4 Mon Sep 17 00:00:00 2001
+From: minaripenguin <minaripenguin@users.noreply.github.com>
+Date: Tue, 14 Jan 2025 15:43:34 +0800
+Subject: [PATCH 32/74] Further reduce notifications bitmap resource usage
+
+* we're having qs panel lags when too many notifications with large bitmaps shows up (like youtube video preview), try compressing the notification bitmaps to webp to reduce memory usage by 40-60% assuming the bitmap is using jpg compression format
+
+Change-Id: Ie3c98a09abe5ec75081752c78d30ba6ac879c329
+---
+ core/java/android/app/Notification.java       | 10 ++++------
+ .../java/android/graphics/drawable/Icon.java  | 19 +++++++++++++++----
+ 2 files changed, 19 insertions(+), 10 deletions(-)
+
+diff --git a/core/java/android/app/Notification.java b/core/java/android/app/Notification.java
+index 66371f7cba0f..b364e1720950 100644
+--- a/core/java/android/app/Notification.java
++++ b/core/java/android/app/Notification.java
+@@ -7925,7 +7925,7 @@ public class Notification implements Parcelable
+         if (extras.getBoolean(EXTRA_REDUCED_IMAGES)) {
+             return;
+         }
+-        boolean isLowRam = ActivityManager.isLowRamDeviceStatic();
++        boolean isLowRam = true;
+ 
+         if (mSmallIcon != null
+                 // Only bitmap icons can be downscaled.
+@@ -8659,7 +8659,7 @@ public class Notification implements Parcelable
+         public void reduceImageSizes(Context context) {
+             super.reduceImageSizes(context);
+             Resources resources = context.getResources();
+-            boolean isLowRam = ActivityManager.isLowRamDeviceStatic();
++            boolean isLowRam = true;
+             if (mPictureIcon != null) {
+                 int maxPictureHeight = resources.getDimensionPixelSize(isLowRam
+                         ? R.dimen.notification_big_picture_max_height_low_ram
+@@ -9899,7 +9899,7 @@ public class Notification implements Parcelable
+         public void reduceImageSizes(Context context) {
+             super.reduceImageSizes(context);
+             Resources resources = context.getResources();
+-            boolean isLowRam = ActivityManager.isLowRamDeviceStatic();
++            boolean isLowRam = true;
+             if (mShortcutIcon != null) {
+                 int maxSize = resources.getDimensionPixelSize(
+                         isLowRam ? R.dimen.notification_small_icon_size_low_ram
+@@ -11054,9 +11054,7 @@ public class Notification implements Parcelable
+             super.reduceImageSizes(context);
+             if (mVerificationIcon != null) {
+                 int rightIconSize = context.getResources().getDimensionPixelSize(
+-                        ActivityManager.isLowRamDeviceStatic()
+-                                ? R.dimen.notification_right_icon_size_low_ram
+-                                : R.dimen.notification_right_icon_size);
++                        R.dimen.notification_right_icon_size_low_ram);
+                 mVerificationIcon.scaleDownIfNecessary(rightIconSize, rightIconSize);
+             }
+         }
+diff --git a/graphics/java/android/graphics/drawable/Icon.java b/graphics/java/android/graphics/drawable/Icon.java
+index f8cb050fb360..48a80c1edd51 100644
+--- a/graphics/java/android/graphics/drawable/Icon.java
++++ b/graphics/java/android/graphics/drawable/Icon.java
+@@ -1150,12 +1150,23 @@ public final class Icon implements Parcelable {
+         if (bitmapWidth > maxWidth || bitmapHeight > maxHeight) {
+             float scale = Math.min((float) maxWidth / bitmapWidth,
+                     (float) maxHeight / bitmapHeight);
+-            bitmap = Bitmap.createScaledBitmap(bitmap,
+-                    Math.max(1, (int) (scale * bitmapWidth)),
+-                    Math.max(1, (int) (scale * bitmapHeight)),
++            int scaledWidth = (int) (scale * bitmapWidth);
++            int scaledHeight = (int) (scale * bitmapHeight);
++            if (scaledWidth > maxWidth) {
++                scaledWidth = maxWidth;
++            }
++            if (scaledHeight > maxHeight) {
++                scaledHeight = maxHeight;
++            }
++            bitmap = Bitmap.createScaledBitmap(bitmap, 
++                    Math.max(1, scaledWidth), 
++                    Math.max(1, scaledHeight), 
+                     true /* filter */);
+         }
+-        return bitmap;
++        java.io.ByteArrayOutputStream byteArrayOutputStream = new java.io.ByteArrayOutputStream();
++        bitmap.compress(Bitmap.CompressFormat.WEBP_LOSSY, 100, byteArrayOutputStream);
++        byte[] compressedBytes = byteArrayOutputStream.toByteArray();
++        return BitmapFactory.decodeByteArray(compressedBytes, 0, compressedBytes.length);
+     }
+ 
+     /**
+-- 
+2.43.0
+
